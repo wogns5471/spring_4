@@ -11,6 +11,8 @@
   		<typeAlias type="com.jh.s4.board.qna.QnaDTO" alias="QnaDTO"/>
   		<typeAlias type="com.jh.s4.util.Pager" alias="Pager"/>
   		<typeAlias type="com.jh.s4.board.BoardDTO" alias="BoardDTO"/>
+  		<typeAlias type="com.jh.s4.member.MemberDTO" alias="MemberDTO"/>
+  		<typeAlias type="com.jh.s4.memberUser.MemberUserDTO" alias="MemberUserDTO"/>
   	</typeAliases>
   
   
