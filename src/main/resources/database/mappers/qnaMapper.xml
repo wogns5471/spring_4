@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.jh.s4.board.qna.QnaDAO">
+
+	<select id="getList" resultType="QnaDTO" parameterType="Pager">
+		
+		select * From
+		(select rownum R, N.* from
+		(SELECT * FROM qna where 
+		<choose>
+			<when test="kind =='tt'">
+				title
+			</when>
+			<when test="kind =='wr'">
+				writer
+			</when>
+			<otherwise>
+				contents
+			</otherwise>
+		</choose>
+		 like '%'||#{search}||'%' order by ref desc, step asc) N)
+		where R between #{startRow} and #{lastRow}
+	</select>
+	
+	<select id="getCount" resultType="Long" parameterType="Pager">
+		select count(num) from qna
+		where
+		<choose>
+			<when test="kind == 'tt'">
+				title
+			</when>
+			<when test="kind == 'wr'">
+				writer
+			</when>
+			<otherwise>
+				contents
+			</otherwise>
+		</choose>
+		like '%'||#{search}||'%'
+	</select>
+
+
+
+	<insert id="setInsert" parameterType="QnaDTO">
+		insert into qna values(qna_seq.nextval, #{title}, #{writer}, #{contents}, sysdate, 0, qna_seq.currval, 0, 0)
+	</insert>
+	
+	
+	 <select id="getOne" parameterType="QnaDTO" resultType="QnaDTO">
+      select * from qna where num = #{num}	
+      </select>
+
+
+		<update id="setUpdate" parameterType="qnaDTO">
+		update board set title=#{title}, contents=#{contents} where num=#{num}
+	
+	</update>
+
+
+
+	<delete id="setDelete" parameterType="QnaDTO">
+		delete qna where num= #{num}
+	
+	</delete>
+
+
+
+	<insert id="setReply" parameterType="QnaDTO">
+		insert into qna values (qna_seq.nextval
+		, #{title}, #{writer}, #{contents}, sysdate, 0, 
+		(select ref from qna where num=#{num}), 
+		(select step+1 from qna where num=#{num}),
+		(select depth+1 from qna where num=#{num}))
+	
+	</insert>
+	
+	<update id="setReplyUpdate" parameterType="QnaDTO">
+		update qna set step=step+1 where 
+		ref=(select ref from qna where num=#{num})
+		and 
+		step> (select step from qna where num=#{num})
+	</update>
+	
+</mapper>
