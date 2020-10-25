@@ -1,5 +1,6 @@
 package com.jh.s4.member.memberUser;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,9 @@ import com.jh.s4.member.MemberDTO;
 @RequestMapping("/member/**")
 public class MemberUserController {
 
+	@Autowired
+	private MemberUserService memberUserService; 
+	
 	//getMemberLogin
 	@GetMapping("memberLogin")
 	public ModelAndView getMemberLogin() throws Exception {
@@ -27,7 +31,7 @@ public class MemberUserController {
 	public ModelAndView getMemberLogin(MemberDTO memberDTO) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		
-		//System.out.println();
+		memberDTO = memberUserService.getMemberLogin(memberDTO);
 		
 		return mv;	
 		

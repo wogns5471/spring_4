@@ -17,7 +17,7 @@ public class MemberUserDAOTest extends MyTestCase {
 	public void getMemberLoginTest()throws Exception{
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setId("id1");
-		memberDTO.setPw("pw1");
+		memberDTO.setPw("pw12");
 		memberDTO = memberUserDAO.getMemberLogin(memberDTO);
 		
 		assertNotNull(memberDTO);
